@@ -8,11 +8,12 @@ using System.Windows.Forms;
 
 namespace Notepad.Controls
 {
-    class MainMenuStrip : MenuStrip
+    public class MainMenuStrip : MenuStrip
     {
+        private const string NAME = "MainMenuStrip";
         public MainMenuStrip()
         {
-            Name = "MainMenuStrip";
+            Name = NAME;
             Dock = DockStyle.Top;
 
             FileDropDownMenu();
