@@ -8,11 +8,13 @@ using System.Windows.Forms;
 
 namespace Notepad.Controls
 {
-    class MainMenuStrip : MenuStrip
+    public class MainMenuStrip : MenuStrip
     {
+        private const string NAME = "MainMenuStrip";
+
         public MainMenuStrip()
         {
-            Name = "MainMenuStrip";
+            Name = NAME;
             Dock = DockStyle.Top;
 
             FileDropDownMenu();
@@ -25,13 +27,13 @@ namespace Notepad.Controls
         {
             var fileDropDownMenu = new ToolStripMenuItem("Fichier");
 
-            var newMenu = new ToolStripMenuItem("Nouveau", null, null, Keys.Control | Keys.N);
-            var openMenu = new ToolStripMenuItem("Ouvrir...", null, null, Keys.Control | Keys.O);
-            var saveMenu = new ToolStripMenuItem("Enregistrer", null, null, Keys.Control | Keys.S);
-            var saveAsMenu = new ToolStripMenuItem("Enregistrer sous...", null, null, Keys.Control | Keys.Shift | Keys.N);
-            var quitMenu = new ToolStripMenuItem("Quitter", null, null, Keys.Alt | Keys.F4);
+            var newFile = new ToolStripMenuItem("Nouveau", null, null, Keys.Control | Keys.N);
+            var open = new ToolStripMenuItem("Ouvrir...", null, null, Keys.Control | Keys.O);
+            var save = new ToolStripMenuItem("Enregistrer", null, null, Keys.Control | Keys.S);
+            var saveAs = new ToolStripMenuItem("Enregistrer sous...", null, null, Keys.Control | Keys.Shift | Keys.N);
+            var quit = new ToolStripMenuItem("Quitter", null, null, Keys.Alt | Keys.F4);
 
-            fileDropDownMenu.DropDownItems.AddRange(new ToolStripItem[] { newMenu, openMenu, saveMenu, saveAsMenu, quitMenu });
+            fileDropDownMenu.DropDownItems.AddRange(new ToolStripItem[] { newFile, open, save, saveAs, quit });
 
             Items.Add(fileDropDownMenu);
         }
