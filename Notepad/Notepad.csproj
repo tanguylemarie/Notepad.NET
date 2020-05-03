@@ -46,7 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MainMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MainTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RichTextBoxContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TabControlContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
