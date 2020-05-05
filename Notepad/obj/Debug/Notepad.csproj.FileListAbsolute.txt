@@ -1,0 +1,10 @@
+E:\Youtube\Visual Studio\Notepad\Notepad\bin\Debug\Notepad.exe.config
+E:\Youtube\Visual Studio\Notepad\Notepad\bin\Debug\Notepad.exe
+E:\Youtube\Visual Studio\Notepad\Notepad\bin\Debug\Notepad.pdb
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.csprojAssemblyReference.cache
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.MainForm.resources
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.Properties.Resources.resources
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.csproj.GenerateResource.cache
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.csproj.CoreCompileInputs.cache
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.exe
+E:\Youtube\Visual Studio\Notepad\Notepad\obj\Debug\Notepad.pdb

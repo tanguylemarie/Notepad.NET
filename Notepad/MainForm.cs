@@ -1,4 +1,5 @@
 ﻿using Notepad.Controls;
+using Notepad.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,11 +14,21 @@ namespace Notepad
 {
     public partial class MainForm : Form
     {
+        public static RichTextBox RichTextBox;
         public MainForm()
         {
             InitializeComponent();
-            MainMenuStrip menuStrip = new MainMenuStrip();
-            Controls.Add(menuStrip);
+            
+            var menuStrip = new MainMenuStrip();
+            var mainTabControl = new MainTabControl();
+            RichTextBox = new CustomRichTextBox();
+
+            mainTabControl.TabPages.Add("Onglet 1");
+            mainTabControl.TabPages[0].Controls.Add(RichTextBox);
+
+            TextFile file = new TextFile("C:/test.txt");
+            
+            Controls.AddRange(new Control[] { mainTabControl, menuStrip });
         }
     }
 }
