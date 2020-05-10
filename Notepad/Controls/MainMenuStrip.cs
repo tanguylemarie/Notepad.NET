@@ -1,4 +1,5 @@
 ﻿using Microsoft.SqlServer.Server;
+using Notepad.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Notepad.Controls
     {
         private const string NAME = "MainMenuStrip";
 
+        private MainForm _form;
         private FontDialog _fontDialog;
 
         public MainMenuStrip()
@@ -25,6 +27,11 @@ namespace Notepad.Controls
             EditDropDownMenu();
             FormatDropDownMenu();
             ViewDropDownMenu();
+
+            HandleCreated += (s, e) =>
+            {
+                _form = FindForm() as MainForm;
+            };
         }
 
         public void FileDropDownMenu()
@@ -36,6 +43,27 @@ namespace Notepad.Controls
             var save = new ToolStripMenuItem("Enregistrer", null, null, Keys.Control | Keys.S);
             var saveAs = new ToolStripMenuItem("Enregistrer sous...", null, null, Keys.Control | Keys.Shift | Keys.N);
             var quit = new ToolStripMenuItem("Quitter", null, null, Keys.Alt | Keys.F4);
+
+            newFile.Click += (s, e) =>
+            {
+                var tabControl = _form.MainTabControl;
+                var tabPagesCount = tabControl.TabPages.Count;
+
+                var fileName = $"Sans titre {tabPagesCount + 1}";
+                var file = new TextFile(fileName);
+                var rtb = new CustomRichTextBox();
+
+                tabControl.TabPages.Add(file.SafeFileName);
+
+                var newTabPage = tabControl.TabPages[tabPagesCount];
+
+                newTabPage.Controls.Add(rtb);
+                tabControl.SelectedTab = newTabPage;
+
+                _form.Session.TextFiles.Add(file);
+                _form.CurrentFile = file;
+                _form.CurrentRtb = rtb;
+            };
 
             fileDropDownMenu.DropDownItems.AddRange(new ToolStripItem[] { newFile, open, save, saveAs, quit });
 
@@ -49,8 +77,8 @@ namespace Notepad.Controls
             var undo = new ToolStripMenuItem("Annuler", null, null, Keys.Control | Keys.Z);
             var redo = new ToolStripMenuItem("Restaurer", null, null, Keys.Control | Keys.Y);
 
-            undo.Click += (s, e) => { if (MainForm.RichTextBox.CanUndo) MainForm.RichTextBox.Undo(); };
-            redo.Click += (s, e) => { if (MainForm.RichTextBox.CanRedo) MainForm.RichTextBox.Redo(); };
+            undo.Click += (s, e) => { if (_form.CurrentRtb.CanUndo) _form.CurrentRtb.Undo(); };
+            redo.Click += (s, e) => { if (_form.CurrentRtb.CanRedo) _form.CurrentRtb.Redo(); };
 
             editDropDown.DropDownItems.AddRange(new ToolStripItem[] { undo, redo });
 
@@ -65,10 +93,10 @@ namespace Notepad.Controls
 
             font.Click += (s, e) =>
             {
-                _fontDialog.Font = MainForm.RichTextBox.Font;
+                _fontDialog.Font = _form.CurrentRtb.Font;
                 _fontDialog.ShowDialog();
 
-                MainForm.RichTextBox.Font = _fontDialog.Font;
+                _form.CurrentRtb.Font = _fontDialog.Font;
             };
 
             formatDropDown.DropDownItems.AddRange(new ToolStripItem[] { font });
@@ -106,21 +134,21 @@ namespace Notepad.Controls
 
             zoomIn.Click += (s, e) =>
             {
-                if (MainForm.RichTextBox.ZoomFactor < 3F)
+                if (_form.CurrentRtb.ZoomFactor < 3F)
                 {
-                    MainForm.RichTextBox.ZoomFactor += 0.3F;
+                    _form.CurrentRtb.ZoomFactor += 0.3F;
                 }
             };
 
             zoomOut.Click += (s, e) =>
             {
-                if (MainForm.RichTextBox.ZoomFactor > 0.7F)
+                if (_form.CurrentRtb.ZoomFactor > 0.7F)
                 {
-                    MainForm.RichTextBox.ZoomFactor -= 0.3F;
+                    _form.CurrentRtb.ZoomFactor -= 0.3F;
                 }
             };
 
-            restoreZoom.Click += (s, e) => { MainForm.RichTextBox.ZoomFactor = 1F; };
+            restoreZoom.Click += (s, e) => { _form.CurrentRtb.ZoomFactor = 1F; };
 
             zoomDropDown.DropDownItems.AddRange(new ToolStripItem[] { zoomIn, zoomOut, restoreZoom });
 
