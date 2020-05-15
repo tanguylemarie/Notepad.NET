@@ -1,10 +1,4 @@
-﻿using Microsoft.SqlServer.Server;
-using Notepad.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Notepad.Objects;
 using System.Windows.Forms;
 
 namespace Notepad.Controls
