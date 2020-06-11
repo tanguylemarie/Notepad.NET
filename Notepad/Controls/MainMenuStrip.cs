@@ -1,4 +1,5 @@
 ﻿using Notepad.Objects;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Notepad.Controls
@@ -9,6 +10,7 @@ namespace Notepad.Controls
 
         private MainForm _form;
         private FontDialog _fontDialog;
+        private OpenFileDialog _openFileDialog;
 
         public MainMenuStrip()
         {
@@ -16,6 +18,7 @@ namespace Notepad.Controls
             Dock = DockStyle.Top;
 
             _fontDialog = new FontDialog();
+            _openFileDialog = new OpenFileDialog();
 
             FileDropDownMenu();
             EditDropDownMenu();
@@ -41,22 +44,54 @@ namespace Notepad.Controls
             newFile.Click += (s, e) =>
             {
                 var tabControl = _form.MainTabControl;
-                var tabPagesCount = tabControl.TabPages.Count;
+                var tabCount = tabControl.TabCount;
 
-                var fileName = $"Sans titre {tabPagesCount + 1}";
+                var fileName = $"Sans titre {tabCount + 1}";
                 var file = new TextFile(fileName);
                 var rtb = new CustomRichTextBox();
 
                 tabControl.TabPages.Add(file.SafeFileName);
 
-                var newTabPage = tabControl.TabPages[tabPagesCount];
+                var newTabPage = tabControl.TabPages[tabCount];
 
                 newTabPage.Controls.Add(rtb);
+
+                _form.Session.Files.Add(file);
+
                 tabControl.SelectedTab = newTabPage;
 
-                _form.Session.TextFiles.Add(file);
                 _form.CurrentFile = file;
                 _form.CurrentRtb = rtb;
+            };
+
+            open.Click += async (s, e) =>
+            {
+                if(_openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var tabControl = _form.MainTabControl;
+                    var tabCount = tabControl.TabCount;
+
+                    var file = new TextFile(_openFileDialog.FileName);
+
+                    var rtb = new CustomRichTextBox();
+
+                    _form.Text = $"{file.FileName} - Notepad.NET";
+
+                    using (StreamReader reader = new StreamReader(file.FileName))
+                    {
+                        file.Contents = await reader.ReadToEndAsync();
+                    }
+
+                    rtb.Text = file.Contents;
+
+                    tabControl.TabPages.Add(file.SafeFileName);
+                    tabControl.TabPages[tabCount].Controls.Add(rtb);
+
+                    _form.Session.Files.Add(file);
+                    _form.CurrentRtb = rtb;
+                    _form.CurrentFile = file;
+                    tabControl.SelectedTab = tabControl.TabPages[tabCount];
+                }
             };
 
             fileDropDownMenu.DropDownItems.AddRange(new ToolStripItem[] { newFile, open, save, saveAs, quit });
